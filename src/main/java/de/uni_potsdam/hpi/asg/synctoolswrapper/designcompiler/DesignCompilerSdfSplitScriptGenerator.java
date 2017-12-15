@@ -72,7 +72,7 @@ public class DesignCompilerSdfSplitScriptGenerator extends DesignCompilerAbstrac
         // setup
         replacements.put("dc_tcl_search_path", tech.getSynctool().getSearchPaths());
         replacements.put("dc_tcl_libraries", tech.getSynctool().getLibraries());
-        tmpcode = replaceInTemplate("dm_dc_tcl_setup", replacements);
+        tmpcode = replaceInTemplate("dc_tcl_setup", replacements);
         if(tmpcode == null) {
             return false;
         }
@@ -81,7 +81,7 @@ public class DesignCompilerSdfSplitScriptGenerator extends DesignCompilerAbstrac
         // analyze
         replacements.put("dc_tcl_vin", vInFile.getName());
         setErrorMsg(replacements, "Anaylze failed", ErrorType.exit);
-        tmpcode = replaceInTemplate("dm_dc_tcl_analyze", replacements);
+        tmpcode = replaceInTemplate("dc_tcl_analyze", replacements);
         if(tmpcode == null) {
             return false;
         }
@@ -90,7 +90,7 @@ public class DesignCompilerSdfSplitScriptGenerator extends DesignCompilerAbstrac
         // elaborate
         replacements.put("dc_tcl_module", rootModule);
         setErrorMsg(replacements, "Elaborate failed", ErrorType.exit);
-        tmpcode = replaceInTemplate("dm_dc_tcl_elab", replacements);
+        tmpcode = replaceInTemplate("dc_tcl_elab", replacements);
         if(tmpcode == null) {
             return false;
         }
@@ -102,7 +102,7 @@ public class DesignCompilerSdfSplitScriptGenerator extends DesignCompilerAbstrac
             if(sdcInFile != null) {
                 replacements.put("dc_tcl_sdcfile", sdcInFile.getName());
                 setErrorMsg(replacements, "Read Sdc failed", ErrorType.exit);
-                tmpcode = replaceInTemplate("dm_dc_tcl_read_sdc", replacements);
+                tmpcode = replaceInTemplate("dc_tcl_read_sdc", replacements);
                 if(tmpcode == null) {
                     return false;
                 }
@@ -112,7 +112,7 @@ public class DesignCompilerSdfSplitScriptGenerator extends DesignCompilerAbstrac
             // write sdf
             replacements.put("dc_tcl_sdfout", sdfInFile.getName());
             setErrorMsg(replacements, "Generate Sdf failed", ErrorType.exit);
-            tmpcode = replaceInTemplate("dm_dc_tcl_write_sdf", replacements);
+            tmpcode = replaceInTemplate("dc_tcl_write_sdf", replacements);
             if(tmpcode == null) {
                 return false;
             }
@@ -124,7 +124,7 @@ public class DesignCompilerSdfSplitScriptGenerator extends DesignCompilerAbstrac
             replacements.put("dc_tcl_sdfinstname", mod.getInstName());
             replacements.put("dc_tcl_sdfout", mod.getSdfFile().getName());
             setErrorMsg(replacements, "Write Sdf " + mod.getInstName() + " failed", ErrorType.exit);
-            tmpcode = replaceInTemplate("dm_dc_tcl_write_sdf_split", replacements);
+            tmpcode = replaceInTemplate("dc_tcl_write_sdf_split", replacements);
             if(tmpcode == null) {
                 return false;
             }
