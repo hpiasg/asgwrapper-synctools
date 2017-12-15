@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+Copyright (C) 2017 Norman Kluge
+ 
+This file is part of ASGwrapper-synctools.
+ 
+ASGwrapper-synctools is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+ASGwrapper-synctools is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with ASGwrapper-synctools.  If not, see <http://www.gnu.org/licenses/>.
+-->
+
+<assembly xmlns="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/plugins/maven-assembly-plugin/assembly/1.1.2 http://maven.apache.org/xsd/assembly-1.1.2.xsd">
+	<id>win</id>
+	<formats>
+		<format>zip</format>
+		<format>dir</format>
+	</formats>
+	<files>
+		<file>
+			<source>LICENSE.txt</source>
+			<outputDirectory>legal</outputDirectory>
+			<destName>ASGwrapper-synctools_LICENSE.txt</destName>
+		</file>
+		<file>
+			<source>NOTICE.txt</source>
+			<outputDirectory>legal</outputDirectory>
+			<destName>ASGwrapper-synctools_NOTICE.txt</destName>
+		</file>
+		<file>
+			<source>README.md</source>
+			<outputDirectory>readme</outputDirectory>
+			<destName>ASGwrapper-synctools_README.md</destName>
+		</file>
+	</files>
+	<fileSets>
+		<fileSet>
+			<directory>src/main/resources</directory>
+			<outputDirectory>.</outputDirectory>
+			<includes>
+				<include>templates/**/*</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+	<dependencySets>
+		<dependencySet>
+			<outputDirectory>lib</outputDirectory>
+			<excludes>
+				<exclude>*:*:zip:*</exclude>
+			</excludes>
+		</dependencySet>
+	</dependencySets>
+</assembly>
