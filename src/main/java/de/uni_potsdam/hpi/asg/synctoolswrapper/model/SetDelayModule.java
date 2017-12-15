@@ -33,7 +33,7 @@ public class SetDelayModule {
         this.setDelayRecords = new HashSet<>();
     }
 
-    public boolean addMatchRecord(SetDelayRecord rec) {
+    public boolean addSetDelayRecord(SetDelayRecord rec) {
         return setDelayRecords.add(rec);
     }
 
