@@ -1,7 +1,7 @@
 package de.uni_potsdam.hpi.asg.synctoolswrapper.designcompiler;
 
 /*
- * Copyright (C) 2017 Norman Kluge
+ * Copyright (C) 2017 - 2018 Norman Kluge
  * 
  * This file is part of ASGwrapper-synctools.
  * 
@@ -77,6 +77,8 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
 
         if(!generateSdf) {
             addInputFilesToCopy(sdfInFile);
+        } else {
+            addOutputFilesToExport(sdfInFile);
         }
         for(SplitSdfModule mod : modules) {
             addOutputFilesToExport(mod.getSdfFile());
