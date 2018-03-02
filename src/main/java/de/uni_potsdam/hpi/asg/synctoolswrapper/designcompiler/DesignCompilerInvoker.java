@@ -132,7 +132,10 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
 
         DesignCompilerSetDelayScriptGenerator gen = new DesignCompilerSetDelayScriptGenerator(tech, modules, tclFileName, vInFile, sdcInFile, vOutFile, sdfOutFile, rootModule);
 
-        addInputFilesToCopy(vInFile, sdcInFile);
+        addInputFilesToCopy(vInFile);
+        if(sdcInFile != null) {
+            addInputFilesToCopy(sdcInFile);
+        }
         addOutputFilesToExport(vOutFile, sdfOutFile);
         addOutputFilesDownloadOnlyStartsWith(logFileName);
 
