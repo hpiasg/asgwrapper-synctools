@@ -59,8 +59,12 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
         return new DesignCompilerInvoker().internalSetDelay(id, tech, modules, vInFile, sdcInFile, vOutFile, sdfOutFile, rootModule);
     }
 
-    public static boolean compileMultiple(Set<CompileModule> plans, SyncTool syncToolConfig) {
-        return new DesignCompilerInvoker().internalCompileMultiple(plans, syncToolConfig);
+    public static boolean compileMultiple(Set<CompileModule> modules, SyncTool syncToolConfig) {
+        return new DesignCompilerInvoker().internalCompileMultiple(modules, syncToolConfig);
+    }
+
+    public static InvokeReturn measureArea(Technology tech, File vInFile, File sdfInFile, String rootModule) {
+        return new DesignCompilerInvoker().internalMeasureArea(tech, vInFile, sdfInFile, rootModule);
     }
 
     private InvokeReturn internalSplitSdf(String id, File vFile, File sdcFile, Technology tech, boolean generateSdf, File sdfInFile, Set<SplitSdfModule> modules, String rootModule) {
@@ -176,6 +180,36 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
         }
 
         return true;
+    }
+
+    private InvokeReturn internalMeasureArea(Technology tech, File vInFile, File sdfInFile, String rootModule) {
+        String tclFileName = "measureArea.tcl";
+        String logFileName = "measureArea.log";
+        String areaLogFileName = "measureArea_area.log";
+
+        List<String> params = generateParams(logFileName, tclFileName);
+
+        DesignCompilerMeasureAreaScriptGenerator gen = new DesignCompilerMeasureAreaScriptGenerator(tech, tclFileName, vInFile, sdfInFile, rootModule, areaLogFileName);
+
+        addInputFilesToCopy(vInFile, sdfInFile);
+        addOutputFilesDownloadOnlyStartsWith(logFileName, areaLogFileName);
+
+        InvokeReturn ret = run(params, "dc_measureArea_" + vInFile.getName(), gen);
+        if(!errorHandling(ret)) {
+            if(ret != null) {
+                logger.error(gen.getErrorMsg(ret.getExitCode()));
+            }
+        }
+
+        Float val = gen.readResult();
+        if(val == null) {
+            logger.error("Could not read area result");
+            ret.setResult(false);
+            return ret;
+        }
+        ret.setPayload(val);
+
+        return ret;
     }
 
     private List<String> generateParams(String logFileName, String tclFileName) {

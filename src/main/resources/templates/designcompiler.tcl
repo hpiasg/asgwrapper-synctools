@@ -105,6 +105,16 @@ if {$rvs == 0} {
 }
 #+dc_tcl_read_sdc_end+#
 
+#+dc_tcl_report_area_begin+#
+redirect #*dc_tcl_arealog*# {
+	set rvs [report_area]
+}
+if {$rvs == 0} {
+	#*dc_tcl_errorcode*#
+}
+#+dc_tcl_report_area_end+#
+
+
 #+dc_tcl_source_tcl_main_begin+#
 echo \n\n#*dc_tcl_component*#\n\n
 set rvs [source #*dc_tcl_component_tclfile*#]
