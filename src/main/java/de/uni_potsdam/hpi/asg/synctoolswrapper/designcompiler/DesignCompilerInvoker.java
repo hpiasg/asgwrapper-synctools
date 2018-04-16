@@ -67,6 +67,10 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
         return new DesignCompilerInvoker().internalMeasureArea(tech, vInFile, sdfInFile, rootModule);
     }
 
+    public static InvokeReturn postSynthesisOperations(Technology tech, File vInFile, File sdcInFile, File vOutFile, File sdfOutFile, String rootModule) {
+        return new DesignCompilerInvoker().internalPostSynthesisOperations(tech, vInFile, sdcInFile, vOutFile, sdfOutFile, rootModule);
+    }
+
     private InvokeReturn internalSplitSdf(String id, File vFile, File sdcFile, Technology tech, boolean generateSdf, File sdfInFile, Set<SplitSdfModule> modules, String rootModule) {
         String tclFileName = "split.tcl";
         String logFileName = "split.log";
@@ -195,6 +199,37 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
         addOutputFilesDownloadOnlyStartsWith(logFileName, areaLogFileName);
 
         InvokeReturn ret = run(params, "dc_measureArea_" + vInFile.getName(), gen);
+        if(!errorHandling(ret)) {
+            if(ret != null) {
+                logger.error(gen.getErrorMsg(ret.getExitCode()));
+            }
+        }
+
+        Float val = gen.readResult();
+        if(val == null) {
+            logger.error("Could not read area result");
+            ret.setResult(false);
+            return ret;
+        }
+        ret.setPayload(val);
+
+        return ret;
+    }
+
+    private InvokeReturn internalPostSynthesisOperations(Technology tech, File vInFile, File sdcInFile, File vOutFile, File sdfOutFile, String rootModule) {
+        String tclFileName = "postSynOp.tcl";
+        String logFileName = "postSynOp.log";
+        String areaLogFileName = "postSynOp_area.log";
+
+        List<String> params = generateParams(logFileName, tclFileName);
+
+        DesignCompilerPostSynthesisOperationsScriptGenerator gen = new DesignCompilerPostSynthesisOperationsScriptGenerator(tech, tclFileName, vInFile, sdcInFile, rootModule, vOutFile, sdfOutFile, areaLogFileName);
+
+        addInputFilesToCopy(vInFile, sdcInFile);
+        addOutputFilesToExport(vOutFile, sdfOutFile);
+        addOutputFilesDownloadOnlyStartsWith(logFileName, areaLogFileName);
+
+        InvokeReturn ret = run(params, "dc_postSynOp_" + vInFile.getName(), gen);
         if(!errorHandling(ret)) {
             if(ret != null) {
                 logger.error(gen.getErrorMsg(ret.getExitCode()));

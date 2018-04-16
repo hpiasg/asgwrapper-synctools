@@ -30,7 +30,7 @@ import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
 import de.uni_potsdam.hpi.asg.common.technology.Technology;
 import de.uni_potsdam.hpi.asg.synctoolswrapper.model.SplitSdfModule;
 
-public class DesignCompilerSdfSplitScriptGenerator extends DesignCompilerAbstractErrorScriptGenerator {
+public class DesignCompilerSdfSplitScriptGenerator extends DesignCompilerAbstractScriptGenerator {
 
     private Technology          tech;
     private String              tclFileName;

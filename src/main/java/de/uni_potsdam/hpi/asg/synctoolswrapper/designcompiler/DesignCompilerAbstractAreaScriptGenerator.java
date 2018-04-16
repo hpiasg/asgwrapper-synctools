@@ -26,7 +26,7 @@ import java.util.regex.Pattern;
 
 import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
 
-public abstract class DesignCompilerAbstractAreaScriptGenerator extends DesignCompilerAbstractErrorScriptGenerator {
+public abstract class DesignCompilerAbstractAreaScriptGenerator extends DesignCompilerAbstractScriptGenerator {
 
     private static final Pattern dcAreaPattern = Pattern.compile("Total cell area:\\s*([0-9.]+)");
 

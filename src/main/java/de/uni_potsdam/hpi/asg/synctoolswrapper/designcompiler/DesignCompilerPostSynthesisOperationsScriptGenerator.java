@@ -28,22 +28,26 @@ import java.util.Map;
 import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
 import de.uni_potsdam.hpi.asg.common.technology.Technology;
 
-public class DesignCompilerMeasureAreaScriptGenerator extends DesignCompilerAbstractAreaScriptGenerator {
+public class DesignCompilerPostSynthesisOperationsScriptGenerator extends DesignCompilerAbstractAreaScriptGenerator {
 
     private Technology tech;
     private String     tclFileName;
     private File       vInFile;
-    private File       sdfInFile;
+    private File       sdcInFile;
     private String     rootModule;
+    private File       vOutFile;
+    private File       sdfOutFile;
 
     private String     areaLogFileName;
 
-    public DesignCompilerMeasureAreaScriptGenerator(Technology tech, String tclFileName, File vInFile, File sdfInFile, String rootModule, String areaLogFileName) {
+    public DesignCompilerPostSynthesisOperationsScriptGenerator(Technology tech, String tclFileName, File vInFile, File sdcInFile, String rootModule, File vOutFile, File sdfOutFile, String areaLogFileName) {
         this.tech = tech;
         this.tclFileName = tclFileName;
         this.vInFile = vInFile;
-        this.sdfInFile = sdfInFile;
+        this.sdcInFile = sdcInFile;
         this.rootModule = rootModule;
+        this.vOutFile = vOutFile;
+        this.sdfOutFile = sdfOutFile;
         this.areaLogFileName = areaLogFileName;
     }
 
@@ -75,11 +79,19 @@ public class DesignCompilerMeasureAreaScriptGenerator extends DesignCompilerAbst
             return false;
         }
 
-        if(!generateReadSdf(code, replacements, sdfInFile)) {
+        if(!generateReadSdc(code, replacements, sdcInFile)) {
             return false;
         }
 
         if(!generateReportArea(code, replacements, areaLogFile)) {
+            return false;
+        }
+
+        if(!generateWriteVerilog(code, replacements, vOutFile, rootModule)) {
+            return false;
+        }
+
+        if(!generateWriteSdf(code, replacements, sdfOutFile)) {
             return false;
         }
 
