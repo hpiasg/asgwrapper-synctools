@@ -71,6 +71,10 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
         return new DesignCompilerInvoker().internalPostSynthesisOperations(tech, vInFile, sdcInFile, vOutFile, sdfOutFile, rootModule);
     }
 
+    public static InvokeReturn subsequentOperation(Technology tech, File vInFile, File sdcInFile, File vOutFile, String rootModule) {
+        return new DesignCompilerInvoker().internalSubsequentOperation(tech, vInFile, sdcInFile, vOutFile, rootModule);
+    }
+
     private InvokeReturn internalSplitSdf(String id, File vFile, File sdcFile, Technology tech, boolean generateSdf, File sdfInFile, Set<SplitSdfModule> modules, String rootModule) {
         String tclFileName = "split.tcl";
         String logFileName = "split.log";
@@ -243,6 +247,28 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
             return ret;
         }
         ret.setPayload(val);
+
+        return ret;
+    }
+
+    private InvokeReturn internalSubsequentOperation(Technology tech, File vInFile, File sdcInFile, File vOutFile, String rootModule) {
+        String tclFileName = "subsequent.tcl";
+        String logFileName = "subsequent.log";
+
+        List<String> params = generateParams(logFileName, tclFileName);
+
+        DesignCompilerSubequentScriptGenerator gen = new DesignCompilerSubequentScriptGenerator(tech, tclFileName, vInFile, sdcInFile, rootModule, vOutFile);
+
+        addInputFilesToCopy(vInFile, sdcInFile);
+        addOutputFilesToExport(vOutFile);
+        addOutputFilesDownloadOnlyStartsWith(logFileName);
+
+        InvokeReturn ret = run(params, "dc_subsequent_" + vInFile.getName(), gen);
+        if(!errorHandling(ret)) {
+            if(ret != null) {
+                logger.error(gen.getErrorMsg(ret.getExitCode()));
+            }
+        }
 
         return ret;
     }

@@ -114,6 +114,13 @@ if {$rvs == 0} {
 }
 #+dc_tcl_report_area_end+#
 
+#+dc_tcl_subsequent_begin+#
+set_dont_touch {#*dc_tcl_donttouch*#} true
+set rvs [compile_ultra]
+if {$rvs == 0} {
+	#*dc_tcl_errorcode*#
+}
+#+dc_tcl_subsequent_end+#
 
 #+dc_tcl_source_tcl_main_begin+#
 echo \n\n#*dc_tcl_component*#\n\n
