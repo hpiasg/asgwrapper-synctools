@@ -182,4 +182,24 @@ public abstract class DesignCompilerAbstractScriptGenerator extends AbstractScri
         return true;
     }
 
+    protected boolean generateTranslate(List<String> code, Map<String, String> replacements) {
+        setErrorMsg(replacements, "Translate failed", ErrorType.exit);
+        List<String> tmpcode = replaceInTemplate("dc_tcl_translate", replacements);
+        if(tmpcode == null) {
+            return false;
+        }
+        code.addAll(tmpcode);
+        return true;
+    }
+
+    protected boolean generateUniquify(List<String> code, Map<String, String> replacements) {
+        setErrorMsg(replacements, "Uniquify failed", ErrorType.exit);
+        List<String> tmpcode = replaceInTemplate("dc_tcl_uniquify", replacements);
+        if(tmpcode == null) {
+            return false;
+        }
+        code.addAll(tmpcode);
+        return true;
+    }
+
 }

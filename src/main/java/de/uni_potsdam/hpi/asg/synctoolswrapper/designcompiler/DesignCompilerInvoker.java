@@ -75,6 +75,10 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
         return new DesignCompilerInvoker().internalSubsequentOperation(tech, vInFile, sdcInFile, vOutFile, rootModule);
     }
 
+    public static InvokeReturn translateAndUniquifyOperation(Technology tech, File vInFile, File vOutFile, String rootModule) {
+        return new DesignCompilerInvoker().internalTranslateAndUniquifyOperation(tech, vInFile, vOutFile, rootModule);
+    }
+
     private InvokeReturn internalSplitSdf(String id, File vFile, File sdcFile, Technology tech, boolean generateSdf, File sdfInFile, Set<SplitSdfModule> modules, String rootModule) {
         String tclFileName = "split.tcl";
         String logFileName = "split.log";
@@ -264,6 +268,28 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
         addOutputFilesDownloadOnlyStartsWith(logFileName);
 
         InvokeReturn ret = run(params, "dc_subsequent_" + vInFile.getName(), gen);
+        if(!errorHandling(ret)) {
+            if(ret != null) {
+                logger.error(gen.getErrorMsg(ret.getExitCode()));
+            }
+        }
+
+        return ret;
+    }
+
+    private InvokeReturn internalTranslateAndUniquifyOperation(Technology tech, File vInFile, File vOutFile, String rootModule) {
+        String tclFileName = "translate.tcl";
+        String logFileName = "translate.log";
+
+        List<String> params = generateParams(logFileName, tclFileName);
+
+        DesignCompilerTranslateScriptGenerator gen = new DesignCompilerTranslateScriptGenerator(tech, tclFileName, vInFile, rootModule, vOutFile);
+
+        addInputFilesToCopy(vInFile);
+        addOutputFilesToExport(vOutFile);
+        addOutputFilesDownloadOnlyStartsWith(logFileName);
+
+        InvokeReturn ret = run(params, "dc_translate_" + vInFile.getName(), gen);
         if(!errorHandling(ret)) {
             if(ret != null) {
                 logger.error(gen.getErrorMsg(ret.getExitCode()));

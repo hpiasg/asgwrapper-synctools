@@ -69,6 +69,13 @@ if {$rvs == 0} {
 }
 #+dc_tcl_translate_end+#
 
+#+dc_tcl_uniquify_begin+#
+set rvs [uniquify]
+if {$rvs == 0} {
+	#*dc_tcl_errorcode*#
+}
+#+dc_tcl_uniquify_end+#
+
 #+dc_tcl_compile_begin+#
 set rvs [compile_ultra]
 if {$rvs == 0} {
