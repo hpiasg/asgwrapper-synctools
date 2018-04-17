@@ -1,4 +1,4 @@
-package de.uni_potsdam.hpi.asg.synctoolswrapper.designcompiler;
+package de.uni_potsdam.hpi.asg.synctoolswrapper;
 
 /*
  * Copyright (C) 2017 - 2018 Norman Kluge
@@ -31,6 +31,14 @@ import de.uni_potsdam.hpi.asg.common.invoker.ExternalToolsInvoker;
 import de.uni_potsdam.hpi.asg.common.invoker.InvokeReturn;
 import de.uni_potsdam.hpi.asg.common.technology.SyncTool;
 import de.uni_potsdam.hpi.asg.common.technology.Technology;
+import de.uni_potsdam.hpi.asg.synctoolswrapper.designcompiler.DesignCompilerCompileScriptGenerator;
+import de.uni_potsdam.hpi.asg.synctoolswrapper.designcompiler.DesignCompilerMeasureAreaScriptGenerator;
+import de.uni_potsdam.hpi.asg.synctoolswrapper.designcompiler.DesignCompilerMeasureScriptGenerator;
+import de.uni_potsdam.hpi.asg.synctoolswrapper.designcompiler.DesignCompilerPostSynthesisOperationsScriptGenerator;
+import de.uni_potsdam.hpi.asg.synctoolswrapper.designcompiler.DesignCompilerSdfSplitScriptGenerator;
+import de.uni_potsdam.hpi.asg.synctoolswrapper.designcompiler.DesignCompilerSetDelayScriptGenerator;
+import de.uni_potsdam.hpi.asg.synctoolswrapper.designcompiler.DesignCompilerSubequentScriptGenerator;
+import de.uni_potsdam.hpi.asg.synctoolswrapper.designcompiler.DesignCompilerTranslateScriptGenerator;
 import de.uni_potsdam.hpi.asg.synctoolswrapper.model.CompileModule;
 import de.uni_potsdam.hpi.asg.synctoolswrapper.model.MeasureModule;
 import de.uni_potsdam.hpi.asg.synctoolswrapper.model.SetDelayModule;
