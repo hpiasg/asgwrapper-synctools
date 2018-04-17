@@ -96,6 +96,7 @@ public class DesignCompilerSubequentScriptGenerator extends DesignCompilerAbstra
             return false;
         }
 
+        addGeneratedFiles(tclFile);
         if(!FileHelper.getInstance().writeFile(tclFile, code)) {
             return false;
         }

@@ -87,6 +87,7 @@ public class DesignCompilerMeasureAreaScriptGenerator extends DesignCompilerAbst
             return false;
         }
 
+        addGeneratedFiles(tclFile);
         if(!FileHelper.getInstance().writeFile(tclFile, code)) {
             return false;
         }

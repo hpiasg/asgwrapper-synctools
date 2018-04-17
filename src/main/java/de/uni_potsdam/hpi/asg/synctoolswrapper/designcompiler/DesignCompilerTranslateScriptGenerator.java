@@ -87,6 +87,7 @@ public class DesignCompilerTranslateScriptGenerator extends DesignCompilerAbstra
             return false;
         }
 
+        addGeneratedFiles(tclFile);
         if(!FileHelper.getInstance().writeFile(tclFile, code)) {
             return false;
         }

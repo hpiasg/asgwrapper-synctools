@@ -99,6 +99,7 @@ public class DesignCompilerPostSynthesisOperationsScriptGenerator extends Design
             return false;
         }
 
+        addGeneratedFiles(tclFile);
         if(!FileHelper.getInstance().writeFile(tclFile, code)) {
             return false;
         }
