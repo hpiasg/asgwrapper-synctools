@@ -51,7 +51,7 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
         super("designcompiler");
     }
 
-    public static String getTemplateFileName() {
+    protected static String getTemplateFileName() {
         return "designcompiler.tcl";
     }
 
