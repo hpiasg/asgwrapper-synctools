@@ -1,5 +1,5 @@
 #
-# Copyright (C) 2017 Norman Kluge
+# Copyright (C) 2017 - 2018 Norman Kluge
 # 
 # This file is part of ASGwrapper-synctools.
 # 
