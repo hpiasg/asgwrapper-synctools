@@ -32,6 +32,9 @@ public class TemplatesInitialiser {
                 return false;
             }
         }
+        if(!AbstractScriptGenerator.readTemplateFiles(PrimeTimeInvoker.getTemplateFileName())) {
+            return false;
+        }
         return true;
     }
 }
