@@ -37,7 +37,7 @@ public class EncounterInvoker extends ExternalToolsInvoker {
     private static final Logger logger = LogManager.getLogger();
 
     private EncounterInvoker() {
-        super("encounterbash");
+        super("encounterBash");
     }
 
     protected static List<String> getTemplateFileName() {
