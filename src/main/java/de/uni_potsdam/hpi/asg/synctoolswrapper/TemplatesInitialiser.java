@@ -35,6 +35,11 @@ public class TemplatesInitialiser {
         if(!AbstractScriptGenerator.readTemplateFiles(PrimeTimeInvoker.getTemplateFileName())) {
             return false;
         }
+        for(String str : IncisiveInvoker.getTemplateFileName()) {
+            if(!AbstractScriptGenerator.readTemplateFiles(str)) {
+                return false;
+            }
+        }
         return true;
     }
 }
