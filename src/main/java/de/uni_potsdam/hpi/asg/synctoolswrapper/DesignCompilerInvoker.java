@@ -31,6 +31,7 @@ import de.uni_potsdam.hpi.asg.common.invoker.ExternalToolsInvoker;
 import de.uni_potsdam.hpi.asg.common.invoker.InvokeReturn;
 import de.uni_potsdam.hpi.asg.common.technology.SyncTool;
 import de.uni_potsdam.hpi.asg.common.technology.Technology;
+import de.uni_potsdam.hpi.asg.synctoolswrapper.designcompiler.DesignCompilerAbstractScriptGenerator;
 import de.uni_potsdam.hpi.asg.synctoolswrapper.designcompiler.DesignCompilerCompileScriptGenerator;
 import de.uni_potsdam.hpi.asg.synctoolswrapper.designcompiler.DesignCompilerMeasureAreaScriptGenerator;
 import de.uni_potsdam.hpi.asg.synctoolswrapper.designcompiler.DesignCompilerMeasureScriptGenerator;
@@ -110,11 +111,10 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
         addOutputFilesDownloadOnlyStartsWith(logFileName);
 
         InvokeReturn ret = run(params, "dc_splitsdf_" + id, gen);
-        if(!errorHandling(ret)) {
-            if(ret != null) {
-                logger.error(gen.getErrorMsg(ret.getExitCode()));
-            }
+        if(!internalErrorHandling(gen, ret)) {
+            return ret;
         }
+
         return ret;
     }
 
@@ -136,10 +136,7 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
         addOutputFilesDownloadOnlyStartsWith(logFileName);
 
         InvokeReturn ret = run(params, "dc_measure_" + id, gen);
-        if(!errorHandling(ret)) {
-            if(ret != null) {
-                logger.error(gen.getErrorMsg(ret.getExitCode()));
-            }
+        if(!internalErrorHandling(gen, ret)) {
             return ret;
         }
         if(!gen.parseValues()) {
@@ -164,10 +161,8 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
         addOutputFilesDownloadOnlyStartsWith(logFileName);
 
         InvokeReturn ret = run(params, "dc_setdelay_" + id, gen);
-        if(!errorHandling(ret)) {
-            if(ret != null) {
-                logger.error(gen.getErrorMsg(ret.getExitCode()));
-            }
+        if(!internalErrorHandling(gen, ret)) {
+            return ret;
         }
 
         return ret;
@@ -188,11 +183,8 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
         DesignCompilerCompileScriptGenerator gen = new DesignCompilerCompileScriptGenerator(modules, syncToolConfig, tclFileName, logFileName);
 
         InvokeReturn ret = run(params, "dc_compile", gen);
-        if(!errorHandling(ret)) {
-            if(ret != null) {
-                logger.error(gen.getErrorMsg(ret.getExitCode()));
-                return false;
-            }
+        if(!internalErrorHandling(gen, ret)) {
+            return false;
         }
 
         if(!gen.parseLogFile()) {
@@ -215,10 +207,8 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
         addOutputFilesDownloadOnlyStartsWith(logFileName, areaLogFileName);
 
         InvokeReturn ret = run(params, "dc_measureArea_" + vInFile.getName(), gen);
-        if(!errorHandling(ret)) {
-            if(ret != null) {
-                logger.error(gen.getErrorMsg(ret.getExitCode()));
-            }
+        if(!internalErrorHandling(gen, ret)) {
+            return ret;
         }
 
         Float val = gen.readResult();
@@ -246,10 +236,8 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
         addOutputFilesDownloadOnlyStartsWith(logFileName, areaLogFileName);
 
         InvokeReturn ret = run(params, "dc_postSynOp_" + vInFile.getName(), gen);
-        if(!errorHandling(ret)) {
-            if(ret != null) {
-                logger.error(gen.getErrorMsg(ret.getExitCode()));
-            }
+        if(!internalErrorHandling(gen, ret)) {
+            return ret;
         }
 
         Float val = gen.readResult();
@@ -276,10 +264,8 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
         addOutputFilesDownloadOnlyStartsWith(logFileName);
 
         InvokeReturn ret = run(params, "dc_subsequent_" + vInFile.getName(), gen);
-        if(!errorHandling(ret)) {
-            if(ret != null) {
-                logger.error(gen.getErrorMsg(ret.getExitCode()));
-            }
+        if(!internalErrorHandling(gen, ret)) {
+            return ret;
         }
 
         return ret;
@@ -298,10 +284,8 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
         addOutputFilesDownloadOnlyStartsWith(logFileName);
 
         InvokeReturn ret = run(params, "dc_translate_" + vInFile.getName(), gen);
-        if(!errorHandling(ret)) {
-            if(ret != null) {
-                logger.error(gen.getErrorMsg(ret.getExitCode()));
-            }
+        if(!internalErrorHandling(gen, ret)) {
+            return ret;
         }
 
         return ret;
@@ -314,5 +298,17 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
             ">", logFileName
         );
         //@formatter:on
+    }
+
+    private boolean internalErrorHandling(DesignCompilerAbstractScriptGenerator gen, InvokeReturn ret) {
+        if(!errorHandling(ret)) {
+            if(ret != null) {
+                String msg = gen.getErrorMsg(ret.getExitCode());
+                logger.error(msg);
+                ret.setErrorMsg(msg);
+            }
+            return false;
+        }
+        return true;
     }
 }

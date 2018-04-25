@@ -61,13 +61,18 @@ public class PrimeTimeInvoker extends ExternalToolsInvoker {
 
         InvokeReturn ret = run(params, "pt_power_" + vInFile.getName(), gen);
         if(!errorHandling(ret)) {
-            logger.error("Primetime failed: " + gen.getErrorMsg(ret.getExitCode()));
+            String msg = "Primetime failed: " + gen.getErrorMsg(ret.getExitCode());
+            logger.error(msg);
+            ret.setErrorMsg(msg);
         }
 
         PrimeTimePowerResultsReader results = new PrimeTimePowerResultsReader();
         if(!results.parseFiles(gen.getPowerLogFile(), timesStr, rootModule)) {
-            logger.error("Primetime failed: Parsing log files");
+            String msg = "Primetime failed: Parsing log files";
+            logger.error(msg);
+            ret.setErrorMsg(msg);
         }
+        ret.setPayload(results);
 
         return ret;
     }

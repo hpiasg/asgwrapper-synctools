@@ -94,7 +94,9 @@ public class IncisiveInvoker extends ExternalToolsInvoker {
         InvokeReturn ret = run(params, "inc_sim_" + vInFile.getName(), gen);
         if(!errorHandling(ret)) {
             if(ret != null) {
-                gen.getErrorMsg(ret.getExitCode());
+                String msg = gen.getErrorMsg(ret.getExitCode());
+                logger.error(msg);
+                ret.setErrorMsg(msg);
             }
         }
 

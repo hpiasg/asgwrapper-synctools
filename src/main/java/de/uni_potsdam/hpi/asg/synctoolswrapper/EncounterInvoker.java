@@ -71,7 +71,9 @@ public class EncounterInvoker extends ExternalToolsInvoker {
         InvokeReturn ret = run(params, "enc_layout_" + vInFile.getName(), gen);
         if(!errorHandling(ret)) {
             if(ret != null) {
-                logger.error("Layout ret code: " + ret.getExitCode());
+                String msg = "Layout ret code: " + ret.getExitCode();
+                logger.error(msg);
+                ret.setErrorMsg(msg);
             }
         }
 
