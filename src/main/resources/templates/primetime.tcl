@@ -26,6 +26,10 @@ lappend search_path #*pt_tcl_search_path*#
 set link_library { #*pt_tcl_libraries*# }
 set target_library { #*pt_tcl_libraries*# }
 
+set search_path [concat {*} $search_path]
+set link_path [concat * $link_path]
+
+
 set rvs [read_verilog #*pt_tcl_vfile*#]
 if {$rvs == 0} {
     exit 1
