@@ -49,7 +49,7 @@ public class IncisiveInvoker extends ExternalToolsInvoker {
     }
 
     protected static List<String> getTemplateFileName() {
-        return Arrays.asList("incisive.sh", "incisive.tcl", "incisive_sdf.com");
+        return Arrays.asList("incisive.sh", "incisive.tcl", "incisive_sdf.cmd");
     }
 
     public static InvokeReturn simulation(Technology tech, File vInFile, File tbInFile, File sdfInFile, File vcdOutFile, File simLogFile, String tbRoot, String sdfScope) {
@@ -65,7 +65,7 @@ public class IncisiveInvoker extends ExternalToolsInvoker {
         String shGuiFileName = "simulation_gui.sh";
         String shTerminalFileName = "simulation_terminal.sh";
         String tclFileName = "simulation.tcl";
-        String sdfCmdFileName = "simulation.tcl";
+        String sdfCmdFileName = "simulation_sdf.cmd";
         String logFileName = "simulation.log";
 
         List<String> params = new ArrayList<>();
