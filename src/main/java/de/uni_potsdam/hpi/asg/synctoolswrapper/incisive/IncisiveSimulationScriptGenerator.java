@@ -85,6 +85,7 @@ public class IncisiveSimulationScriptGenerator extends AbstractScriptGenerator {
         Map<String, String> replacements = new HashMap<>();
 
         // execs
+        replacements.put("sim_sh_path", execs.get(ExecType.path));
         replacements.put("sim_sh_vcompiler", execs.get(ExecType.vCompiler));
         replacements.put("sim_sh_sdfcompiler", execs.get(ExecType.sdfCompiler));
         replacements.put("sim_sh_elaborator", execs.get(ExecType.elaborator));

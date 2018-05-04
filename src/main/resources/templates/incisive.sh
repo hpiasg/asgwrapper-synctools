@@ -2,6 +2,7 @@
 rm -rf INCA_libs
 rm -rf waves.shm
 rm -f #*sim_sh_sdffile*#.X
+export PATH=$PATH:#*sim_sh_path*#
 #+sim_sh_setup_end+#
 
 #+sim_sh_compile_verilog_begin+#

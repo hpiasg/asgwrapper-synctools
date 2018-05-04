@@ -39,7 +39,7 @@ public class IncisiveInvoker extends ExternalToolsInvoker {
     private static final Logger logger = LogManager.getLogger();
 
     public enum ExecType {
-        vCompiler, sdfCompiler, elaborator, simulator
+        path, vCompiler, sdfCompiler, elaborator, simulator
     }
 
     private static Map<ExecType, String> execs;
@@ -107,7 +107,13 @@ public class IncisiveInvoker extends ExternalToolsInvoker {
         if(execs == null) {
             execs = new HashMap<>();
 
-            ToolConfig cfg = getToolConfig("incisiveCompilerVerilog");
+            ToolConfig cfg = getToolConfig("incisivePath");
+            if(cfg == null) {
+                return false;
+            }
+            execs.put(ExecType.path, cfg.getCmdline());
+
+            cfg = getToolConfig("incisiveCompilerVerilog");
             if(cfg == null) {
                 return false;
             }
