@@ -27,8 +27,10 @@ import java.util.Set;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import de.uni_potsdam.hpi.asg.common.invoker.AbstractScriptGenerator;
 import de.uni_potsdam.hpi.asg.common.invoker.ExternalToolsInvoker;
 import de.uni_potsdam.hpi.asg.common.invoker.InvokeReturn;
+import de.uni_potsdam.hpi.asg.common.iohelper.FileHelper;
 import de.uni_potsdam.hpi.asg.common.technology.SyncTool;
 import de.uni_potsdam.hpi.asg.common.technology.Technology;
 import de.uni_potsdam.hpi.asg.synctoolswrapper.designcompiler.DesignCompilerAbstractScriptGenerator;
@@ -46,7 +48,10 @@ import de.uni_potsdam.hpi.asg.synctoolswrapper.model.SetDelayModule;
 import de.uni_potsdam.hpi.asg.synctoolswrapper.model.SplitSdfModule;
 
 public class DesignCompilerInvoker extends ExternalToolsInvoker {
-    private static final Logger logger = LogManager.getLogger();
+    private static final Logger logger           = LogManager.getLogger();
+
+    private static final int    LICENSE_WAITTIME = 20000;
+    private static final int    LICENSE_RETRIES  = 10;
 
     private DesignCompilerInvoker() {
         super("designcompiler");
@@ -110,7 +115,7 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
         }
         addOutputFilesDownloadOnlyStartsWith(logFileName);
 
-        InvokeReturn ret = run(params, "dc_splitsdf_" + id, gen);
+        InvokeReturn ret = internalRun(params, "dc_splitsdf_" + id, gen, logFileName);
         if(!internalErrorHandling(gen, ret)) {
             return ret;
         }
@@ -135,7 +140,7 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
         }
         addOutputFilesDownloadOnlyStartsWith(logFileName);
 
-        InvokeReturn ret = run(params, "dc_measure_" + id, gen);
+        InvokeReturn ret = internalRun(params, "dc_measure_" + id, gen, logFileName);
         if(!internalErrorHandling(gen, ret)) {
             return ret;
         }
@@ -160,7 +165,7 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
         addOutputFilesToExport(vOutFile, sdfOutFile);
         addOutputFilesDownloadOnlyStartsWith(logFileName);
 
-        InvokeReturn ret = run(params, "dc_setdelay_" + id, gen);
+        InvokeReturn ret = internalRun(params, "dc_setdelay_" + id, gen, logFileName);
         if(!internalErrorHandling(gen, ret)) {
             return ret;
         }
@@ -182,7 +187,7 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
 
         DesignCompilerCompileScriptGenerator gen = new DesignCompilerCompileScriptGenerator(modules, syncToolConfig, tclFileName, logFileName);
 
-        InvokeReturn ret = run(params, "dc_compile", gen);
+        InvokeReturn ret = internalRun(params, "dc_compile", gen, logFileName);
         if(!internalErrorHandling(gen, ret)) {
             return false;
         }
@@ -206,7 +211,7 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
         addInputFilesToCopy(vInFile, sdfInFile);
         addOutputFilesDownloadOnlyStartsWith(logFileName, areaLogFileName);
 
-        InvokeReturn ret = run(params, "dc_measureArea_" + vInFile.getName(), gen);
+        InvokeReturn ret = internalRun(params, "dc_measureArea_" + vInFile.getName(), gen, logFileName);
         if(!internalErrorHandling(gen, ret)) {
             return ret;
         }
@@ -235,7 +240,7 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
         addOutputFilesToExport(vOutFile, sdfOutFile);
         addOutputFilesDownloadOnlyStartsWith(logFileName, areaLogFileName);
 
-        InvokeReturn ret = run(params, "dc_postSynOp_" + vInFile.getName(), gen);
+        InvokeReturn ret = internalRun(params, "dc_postSynOp_" + vInFile.getName(), gen, logFileName);
         if(!internalErrorHandling(gen, ret)) {
             return ret;
         }
@@ -263,7 +268,7 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
         addOutputFilesToExport(vOutFile);
         addOutputFilesDownloadOnlyStartsWith(logFileName);
 
-        InvokeReturn ret = run(params, "dc_subsequent_" + vInFile.getName(), gen);
+        InvokeReturn ret = internalRun(params, "dc_subsequent_" + vInFile.getName(), gen, logFileName);
         if(!internalErrorHandling(gen, ret)) {
             return ret;
         }
@@ -283,7 +288,7 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
         addOutputFilesToExport(vOutFile);
         addOutputFilesDownloadOnlyStartsWith(logFileName);
 
-        InvokeReturn ret = run(params, "dc_translate_" + vInFile.getName(), gen);
+        InvokeReturn ret = internalRun(params, "dc_translate_" + vInFile.getName(), gen, logFileName);
         if(!internalErrorHandling(gen, ret)) {
             return ret;
         }
@@ -298,6 +303,34 @@ public class DesignCompilerInvoker extends ExternalToolsInvoker {
             ">", logFileName
         );
         //@formatter:on
+    }
+
+    private InvokeReturn internalRun(List<String> params, String subDir, AbstractScriptGenerator generator, String logFileName) {
+        int attempt = 0;
+        InvokeReturn ret = null;
+        while(attempt <= LICENSE_RETRIES) {
+            ret = run(params, subDir, generator);
+            if(ret == null) {
+                return null;
+            }
+            if(ret.getExitCode() == 255) {
+                // Might be license. Check
+                File f = new File(ret.getWorkingDir(), logFileName);
+                List<String> lines = FileHelper.getInstance().readFile(f);
+                if(lines.contains("Error: All 'Design-Compiler' licenses are in use. (SEC-50)")) {
+                    logger.info("Design compiler license error detected. Retrying..");
+                    try {
+                        Thread.sleep(LICENSE_WAITTIME);
+                    } catch(InterruptedException e) {
+                        return null;
+                    }
+                    attempt++;
+                    continue;
+                }
+            }
+            break;
+        }
+        return ret;
     }
 
     private boolean internalErrorHandling(DesignCompilerAbstractScriptGenerator gen, InvokeReturn ret) {
