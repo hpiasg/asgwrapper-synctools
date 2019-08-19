@@ -37,7 +37,7 @@ import de.uni_potsdam.hpi.asg.common.technology.Technology;
 import de.uni_potsdam.hpi.asg.synctoolswrapper.model.MeasureModule;
 import de.uni_potsdam.hpi.asg.synctoolswrapper.model.MeasureRecord;
 
-public class DesignCompilerMeasureScriptGenerator extends DesignCompilerAbstractErrorScriptGenerator {
+public class DesignCompilerMeasureScriptGenerator extends DesignCompilerAbstractScriptGenerator {
     private static final Logger      logger      = LogManager.getLogger();
 
     private static final String      asgIdStr    = "ASGtools";

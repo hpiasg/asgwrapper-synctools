@@ -1,18 +1,18 @@
 #
-# Copyright (C) 2017 Norman Kluge
-# 
+# Copyright (C) 2017 - 2018 Norman Kluge
+#
 # This file is part of ASGwrapper-synctools.
-# 
+#
 # ASGwrapper-synctools is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
-# 
+#
 # ASGwrapper-synctools is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with ASGwrapper-synctools.  If not, see <http://www.gnu.org/licenses/>.
 #
@@ -69,8 +69,15 @@ if {$rvs == 0} {
 }
 #+dc_tcl_translate_end+#
 
+#+dc_tcl_uniquify_begin+#
+set rvs [uniquify]
+if {$rvs == 0} {
+	#*dc_tcl_errorcode*#
+}
+#+dc_tcl_uniquify_end+#
+
 #+dc_tcl_compile_begin+#
-set rvs [compile_ultra]
+set rvs [compile -ungroup_all -no_design_rule -map_effort high]
 if {$rvs == 0} {
 	#*dc_tcl_errorcode*#
 }
@@ -104,6 +111,23 @@ if {$rvs == 0} {
 	#*dc_tcl_errorcode*#
 }
 #+dc_tcl_read_sdc_end+#
+
+#+dc_tcl_report_area_begin+#
+redirect #*dc_tcl_arealog*# {
+	set rvs [report_area]
+}
+if {$rvs == 0} {
+	#*dc_tcl_errorcode*#
+}
+#+dc_tcl_report_area_end+#
+
+#+dc_tcl_subsequent_begin+#
+set_dont_touch {#*dc_tcl_donttouch*#} true
+set rvs [compile_ultra]
+if {$rvs == 0} {
+	#*dc_tcl_errorcode*#
+}
+#+dc_tcl_subsequent_end+#
 
 #+dc_tcl_source_tcl_main_begin+#
 echo \n\n#*dc_tcl_component*#\n\n

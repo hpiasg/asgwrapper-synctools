@@ -31,7 +31,7 @@ import de.uni_potsdam.hpi.asg.common.technology.Technology;
 import de.uni_potsdam.hpi.asg.synctoolswrapper.model.SetDelayModule;
 import de.uni_potsdam.hpi.asg.synctoolswrapper.model.SetDelayRecord;
 
-public class DesignCompilerSetDelayScriptGenerator extends DesignCompilerAbstractErrorScriptGenerator {
+public class DesignCompilerSetDelayScriptGenerator extends DesignCompilerAbstractScriptGenerator {
     private Technology                tech;
     private Set<SetDelayModule>       modules;
     private String                    tclFileName;

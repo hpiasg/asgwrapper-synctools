@@ -22,28 +22,29 @@ package de.uni_potsdam.hpi.asg.synctoolswrapper.model;
 import java.io.File;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import com.google.common.collect.BiMap;
+import com.google.common.collect.HashBiMap;
 
 import de.uni_potsdam.hpi.asg.synctoolswrapper.model.MeasureRecord.MeasureEdge;
 import de.uni_potsdam.hpi.asg.synctoolswrapper.model.MeasureRecord.MeasureType;
 
 public class MeasureModule {
-    private static final Logger        logger = LogManager.getLogger();
+    private static final Logger            logger = LogManager.getLogger();
 
-    private String                     moduleName;
-    private File                       sdfFile;
+    private String                         moduleName;
+    private File                           sdfFile;
 
-    //private BiMap<String, MeasureRecord> measureRecords;
-    private Map<String, MeasureRecord> measureRecords;
+    protected BiMap<String, MeasureRecord> measureRecords;
+//    private Map<String, MeasureRecord> measureRecords;
 
     public MeasureModule(String moduleName) {
         this.moduleName = moduleName;
-        //this.measureRecords = HashBiMap.create();
-        this.measureRecords = new HashMap<>();
+        this.measureRecords = HashBiMap.create();
+//        this.measureRecords = new HashMap<>();
     }
 
     public boolean addValue(String id, Float value) {

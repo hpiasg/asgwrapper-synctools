@@ -36,7 +36,7 @@ import de.uni_potsdam.hpi.asg.common.misc.CommonConstants;
 import de.uni_potsdam.hpi.asg.common.technology.SyncTool;
 import de.uni_potsdam.hpi.asg.synctoolswrapper.model.CompileModule;
 
-public class DesignCompilerCompileScriptGenerator extends DesignCompilerAbstractErrorScriptGenerator {
+public class DesignCompilerCompileScriptGenerator extends DesignCompilerAbstractScriptGenerator {
 
     private final Logger       logger         = LogManager.getLogger();
 
