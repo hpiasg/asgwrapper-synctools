@@ -1,12 +1,12 @@
-ASGwrapper-synctools v1.0
-Copyright (C) 2017-2019 Hasso-Plattner-Institut fuer Softwaresystemtechnik GmbH
+ASGwrapper-synctools v1.0.1
+Copyright (C) 2017-2022 Hasso-Plattner-Institut für Digital Engineering gGmbH
 
-This product includes software developed at Hasso-Plattner-Institut fuer Softwaresystemtechnik GmbH.
-The Software developed and owned by the Hasso-Plattner-Institut fuer Softwaresystemtechnik GmbH is licensed under the GNU GENERAL PUBLIC LICENSE Version 3 ("GPL") to all third parties and that license, as required by the GPL, is included in the LICENSE.txt file.
+This product includes software developed at Hasso-Plattner-Institut für Digital Engineering gGmbH.
+The Software developed and owned by the Hasso-Plattner-Institut für Digital Engineering gGmbH is licensed under the GNU GENERAL PUBLIC LICENSE Version 3 ("GPL") to all third parties and that license, as required by the GPL, is included in the LICENSE.txt file.
 
 This software makes use of the following libraries:
 
-ASGcommon v4.0
+ASGcommon v4.0.3
 https://github.com/hpiasg/asgcommon
-Copyright (C) 2012-2019 Universitaet Augsburg, Hasso-Plattner-Institut fuer Softwaresystemtechnik GmbH
+Copyright (C) 2012-2022 Universitaet Augsburg, Hasso-Plattner-Institut für Digital Engineering gGmbH
 Licensed under GNU General Public License (GPL), Version 3.0
